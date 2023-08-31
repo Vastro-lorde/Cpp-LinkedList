@@ -58,10 +58,40 @@ public:
 
 	void printList() {
 		Node<T>* node = head;
+		int count = 1;
 		while (node != nullptr) {
-			cout << node->_value << endl;
+			if (count == 1)
+			{
+				cout << '[' << node->_value << ',';
+			}
+			else if (count == size)
+			{
+				cout << node->_value << ']' << endl;
+			}
+			else
+			{
+				cout << node->_value << ',';
+			}
+			node = node->next;
+			count++;
+		}
+	}
+
+	T getNodeValue(int index) {
+		Node<T>* node = head;
+		if (index > size)
+		{
+			return -1;
+		}
+		if (index == 0)
+		{
+			return node->_value;
+		}
+		for (size_t i = 1; i <= index; i++)
+		{
 			node = node->next;
 		}
+		return node->_value;
 	}
 };
 
@@ -76,6 +106,8 @@ int main()
 	singlyLinked->AddToFront(12);
 
 	singlyLinked->printList();
+
+	cout << "value at index 0: " << singlyLinked->getNodeValue(90);
 
 	delete singlyLinked; // Don't forget to free the allocated memory
 
