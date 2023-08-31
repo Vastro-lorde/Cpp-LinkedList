@@ -1,88 +1,83 @@
-
 #include <iostream>
 #include <string>
 using namespace std;
 
-
+template <typename T>
 class Node
 {
 public:
-	string _value;
+	T _value;
 	Node* next;
 
+	Node() : next(nullptr) {}
 };
 
-
+template <typename T>
 class SpiritSinglyLinkedList
 {
 public:
-	Node* head = new Node();
-	int size = 0;
-	void AddToEnd(string value) {
-			Node* newNode = new Node();{};
-			newNode->_value = value;
-		if (size > 1)
-		{
-			Node* node = head;
-			//get to the last node using the while loop
-			while (node->next != NULL)
-			{
-				node = node->next;
-			}
+	Node<T>* head;
+	int size;
 
-			// by now node is now the last node in the linkedlist
-			node->next = newNode;
-			newNode->next = NULL;
-			size++;
-		}
-		else
-		{
-			head->next = newNode;
-			newNode->next = NULL;
-			size++;
-		}
-
-	};
-	void AddToFront(string value) {
-		Node* newNode = new Node(); {};
-		newNode->_value = value;
-		
-		Node* tempNode = head;
-
-		newNode->next = tempNode;
-
-		head = newNode;
-		
+	SpiritSinglyLinkedList(T headValue) : size(1) {
+		head = new Node<T>();
+		head->_value = headValue;
 	}
-	void printList() {
-		Node* node = head;
-		while (node != NULL)
-		{
-			cout << node->_value << endl;
 
+	~SpiritSinglyLinkedList() {
+		Node<T>* current = head;
+		while (current != nullptr) {
+			Node<T>* next = current->next;
+			delete current;
+			current = next;
+		}
+	}
+
+	void AddToEnd(T value) {
+		Node<T>* newNode = new Node<T>();
+		newNode->_value = value;
+
+		Node<T>* node = head;
+		while (node->next != nullptr) {
 			node = node->next;
 		}
-	};
-	SpiritSinglyLinkedList(string headValue) {
-		head->_value = headValue;
-		size = 1;
-	};
+
+		node->next = newNode;
+		size++;
+	}
+
+	void AddToFront(T value) {
+		Node<T>* newNode = new Node<T>();
+		newNode->_value = value;
+
+		newNode->next = head;
+		head = newNode;
+
+		size++;
+	}
+
+	void printList() {
+		Node<T>* node = head;
+		while (node != nullptr) {
+			cout << node->_value << endl;
+			node = node->next;
+		}
+	}
 };
-
-
-
 
 int main()
 {
-	SpiritSinglyLinkedList* singlyLinked = new SpiritSinglyLinkedList("Seun");
+	SpiritSinglyLinkedList<int>* singlyLinked = new SpiritSinglyLinkedList<int>(8);
 
-	singlyLinked->AddToEnd("Daniel");
-	singlyLinked->AddToEnd("Omatsola");
+	singlyLinked->AddToEnd(9);
+	singlyLinked->AddToEnd(10);
 
-	singlyLinked->AddToFront("Mr.");
-	singlyLinked->AddToFront("Family Of:");
+	singlyLinked->AddToFront(11);
+	singlyLinked->AddToFront(12);
 
 	singlyLinked->printList();
 
-	cout << singlyLinked->size << endl;
+	delete singlyLinked; // Don't forget to free the allocated memory
+
+	return 0;
 }
